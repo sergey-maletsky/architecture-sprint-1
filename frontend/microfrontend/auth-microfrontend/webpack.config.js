@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack');
 const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require('./compilation.config.js');
+const InfoTooltip = require("./src/components/InfoTooltip");
 
 module.exports = (_, argv) => ({
   output: {
@@ -67,6 +68,9 @@ module.exports = (_, argv) => ({
       remotes: {},
       exposes: {
         './AuthControl': './src/components/AuthTestControl.js',
+        './InfoTooltip': './src/components/InfoTooltip.js',
+        './Login': './src/components/Login.js',
+        './Register': './src/components/Register.js',
       },
       shared: {
         ...deps,

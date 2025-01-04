@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import * as auth from "../utils/auth.js";
+
 function Register ({ onRegister }){
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -13,6 +15,21 @@ function Register ({ onRegister }){
     }
     onRegister(userData);
   }
+
+  function onRegister({ email, password }) {
+    auth
+        .register(email, password)
+        .then((res) => {
+          setTooltipStatus("success");
+          setIsInfoToolTipOpen(true);
+          history.push("/signin");
+        })
+        .catch((err) => {
+          setTooltipStatus("fail");
+          setIsInfoToolTipOpen(true);
+        });
+  }
+
   return (
     <div className="auth-form">
       <form className="auth-form__form" onSubmit={handleSubmit}>

@@ -6,7 +6,10 @@
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=10050 npx serve",
     "start": "webpack serve --mode development",
-    "start:live": "webpack serve --mode development --live-reload --hot"
+    "start:live": "webpack serve --mode development --live-reload --hot",
+    "test": "react-scripts test",
+    "test:microfrontend": "npx jest ./index.spec.js",
+    "eject": "react-scripts eject"
   },
   "license": "MIT",
   "author": {
@@ -28,11 +31,39 @@
     "webpack": "^5.57.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.3.1",
-    "dotenv-webpack": "^8.0.1"
+    "dotenv-webpack": "^8.0.1",
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.14.9",
+    "dotenv": "^16.0.2",
+    "wait-port": "^1.1.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.0.1",
+    "web-vitals": "^1.0.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

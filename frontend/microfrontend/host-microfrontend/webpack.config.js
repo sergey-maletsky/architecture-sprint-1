@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
@@ -9,6 +10,7 @@ const printCompilationMessage = require('./compilation.config.js');
 
 module.exports = (_, argv) => ({
   output: {
+/*    filename: 'main.js', // Генерация main.js*/
     publicPath: "http://localhost:10050/",
   },
 
@@ -18,7 +20,11 @@ module.exports = (_, argv) => ({
 
   devServer: {
     port: 10050,
-    historyApiFallback: true,    watchFiles: [path.resolve(__dirname, 'src')],
+    historyApiFallback: true,
+/*    static: {
+      directory: path.join(__dirname, "dist"), // Папка с файлами сборки
+    },*/
+    watchFiles: [path.resolve(__dirname, 'src')],
     onListening: function (devServer) {
       const port = devServer.server.address().port
 
@@ -65,25 +71,36 @@ module.exports = (_, argv) => ({
       filename: "remoteEntry.js",
       remotes: {
         'auth-microfrontend': 'auth_microfrontend@http://localhost:10051/remoteEntry.js',
-        'profile-microfrontend': 'profile_microfrontend@http://localhost:10052/remoteEntry.js',
+/*        'profile-microfrontend': 'profile_microfrontend@http://localhost:10052/remoteEntry.js',*/
         'cards-microfrontend': 'cards_microfrontend@http://localhost:10053/remoteEntry.js',
       },
       exposes: {},
       shared: {
         ...deps,
-        react: {
+        'react-router-dom': {
           singleton: true,
-          requiredVersion: deps.react,
+          eager: false,
+          requiredVersion: deps["react-router-dom"]
         },
-        "react-dom": {
+        'react': {
           singleton: true,
-          requiredVersion: deps["react-dom"],
+          eager: false,
+          requiredVersion: deps["react"]
+        },
+        'react-dom': {
+          singleton: true,
+          eager: false,
+          requiredVersion: deps["react-dom"]
         },
       },
     }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
+    new CopyWebpackPlugin([
+        { from: 'manifest.json', to: '.' },
+      ],
+    ),
     new Dotenv()
   ],
 });

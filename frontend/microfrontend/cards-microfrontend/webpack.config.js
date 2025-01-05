@@ -64,22 +64,25 @@ module.exports = (_, argv) => ({
     new ModuleFederationPlugin({
       name: "cards_microfrontend",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+        'profile-microfrontend': 'profile_microfrontend@http://localhost:10052/remoteEntry.js',
+      },
       exposes: {
-        './CardsControl': './src/components/CardsTestControl.js',
-        './AddPlacePopup': './src/components/AddPlacePopup.js',
-        './Card': './src/components/Card.js',
-        './ImagePopup': './src/components/ImagePopup.js',
+        './CardsApp': './src/App',
       },
       shared: {
         ...deps,
-        react: {
+        'react-router-dom': {
           singleton: true,
-          requiredVersion: deps.react,
+          requiredVersion: deps["react-router-dom"]
         },
-        "react-dom": {
+        'react': {
           singleton: true,
-          requiredVersion: deps["react-dom"],
+          requiredVersion: deps["react"]
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: deps["react-dom"]
         },
       },
     }),

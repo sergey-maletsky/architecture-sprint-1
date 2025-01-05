@@ -66,19 +66,22 @@ module.exports = (_, argv) => ({
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './ProfileControl': './src/components/ProfileTestControl.js',
-        './EditAvatarPopup': './src/components/EditAvatarPopup.js',
-        './EditProfilePopup': './src/components/EditProfilePopup.js',
+        './ProfileApp': './src/App',
+        './ProfileButtons': './src/App'
       },
       shared: {
         ...deps,
-        react: {
+        'react-router-dom': {
           singleton: true,
-          requiredVersion: deps.react,
+          requiredVersion: deps["react-router-dom"],
         },
-        "react-dom": {
+        'react': {
           singleton: true,
-          requiredVersion: deps["react-dom"],
+          requiredVersion: deps["react"]
+        },
+        'react-dom': {
+          singleton: true,
+          requiredVersion: deps["react-dom"]
         },
       },
     }),

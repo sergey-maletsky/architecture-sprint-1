@@ -6,7 +6,6 @@ const Dotenv = require('dotenv-webpack');
 const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require('./compilation.config.js');
-const InfoTooltip = require("./src/components/InfoTooltip");
 
 module.exports = (_, argv) => ({
   output: {
@@ -58,6 +57,13 @@ module.exports = (_, argv) => ({
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-url-loader',
+        options: {
+          limit: 10000,
+        },
+      },
     ],
   },
 
@@ -67,20 +73,25 @@ module.exports = (_, argv) => ({
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './AuthControl': './src/components/AuthTestControl.js',
-        './InfoTooltip': './src/components/InfoTooltip.js',
-        './Login': './src/components/Login.js',
-        './Register': './src/components/Register.js',
+        './AuthApp': './src/App',
+        './isLoggedIn': './src/App',
       },
       shared: {
         ...deps,
-        react: {
+        'react-router-dom': {
           singleton: true,
-          requiredVersion: deps.react,
+          eager: false,
+          requiredVersion: deps["react-router-dom"]
         },
-        "react-dom": {
+        'react': {
           singleton: true,
-          requiredVersion: deps["react-dom"],
+          eager: false,
+          requiredVersion: deps["react"]
+        },
+        'react-dom': {
+          singleton: true,
+          eager: false,
+          requiredVersion: deps["react-dom"]
         },
       },
     }),
